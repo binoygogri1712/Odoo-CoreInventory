@@ -1,8 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
-  HiOutlineSearch,
-  HiOutlineBell,
   HiOutlineMenu,
   HiOutlineCalendar,
 } from 'react-icons/hi';
@@ -17,13 +15,15 @@ const pageTitles = {
   '/warehouses': 'Total Warehouses',
   '/projects': 'Projects',
   '/move-history': 'Move History',
-  '/settings': 'Settings',
+  '/profile': 'Profile',
 };
 
 export default function Topbar({ onMenuToggle }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [searchFocused, setSearchFocused] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const currentTitle = pageTitles[location.pathname] || 'Dashboard';
   
   const user = JSON.parse(localStorage.getItem('traceflow_user') || sessionStorage.getItem('traceflow_user') || '{}');
@@ -36,6 +36,22 @@ export default function Topbar({ onMenuToggle }) {
     month: 'long',
     day: 'numeric',
   });
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setProfileDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownRef]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('traceflow_token');
+    sessionStorage.removeItem('traceflow_token');
+    navigate('/login');
+  };
 
   return (
     <header className="topbar">
@@ -53,31 +69,31 @@ export default function Topbar({ onMenuToggle }) {
       </div>
 
       <div className="topbar__right">
-        <div className={`topbar__search ${searchFocused ? 'topbar__search--focused' : ''}`}>
-          <HiOutlineSearch className="topbar__search-icon" />
-          <input
-            type="text"
-            placeholder="Search products, orders..."
-            className="topbar__search-input"
-            onFocus={() => setSearchFocused(true)}
-            onBlur={() => setSearchFocused(false)}
-          />
-        </div>
-
-        <button className="topbar__icon-btn topbar__notification-btn">
-          <HiOutlineBell />
-          <span className="topbar__notification-dot"></span>
-        </button>
-
         <div className="topbar__divider"></div>
 
-        <button className="topbar__profile">
-          <div className="topbar__profile-avatar">{avatarText}</div>
-          <div className="topbar__profile-info">
-            <span className="topbar__profile-name">{userName}</span>
-            <span className="topbar__profile-role">Admin</span>
-          </div>
-        </button>
+        <div 
+            className="topbar__profile-wrapper" 
+            style={{ position: 'relative' }}
+            ref={dropdownRef}
+        >
+            <button 
+                className="topbar__profile"
+                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+            >
+              <div className="topbar__profile-avatar">{avatarText}</div>
+              <div className="topbar__profile-info">
+                <span className="topbar__profile-name">{userName}</span>
+                <span className="topbar__profile-role">Admin</span>
+              </div>
+            </button>
+
+            {profileDropdownOpen && (
+                <div className="topbar__profile-dropdown">
+                    <button onClick={() => { setProfileDropdownOpen(false); navigate('/profile'); }}>Profile</button>
+                    <button onClick={handleLogout} className="logout-text">Logout</button>
+                </div>
+            )}
+        </div>
       </div>
     </header>
   );

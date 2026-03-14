@@ -9,7 +9,7 @@ import {
   HiOutlineOfficeBuilding,
   HiOutlineBriefcase,
   HiOutlineClock,
-  HiOutlineCog,
+  HiOutlineUser,
   HiOutlineLogout,
   HiOutlineChevronDown,
   HiOutlineChevronRight,
@@ -34,7 +34,7 @@ const afterOpsItems = [
 
 const bottomItems = [
   { path: '/move-history', label: 'Move History', icon: HiOutlineClock },
-  { path: '/settings', label: 'Settings', icon: HiOutlineCog },
+  { path: '/profile', label: 'Profile', icon: HiOutlineUser },
 ];
 
 export default function Sidebar() {
@@ -53,10 +53,16 @@ export default function Sidebar() {
     <aside className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}>
       {/* Brand */}
       <div className="sidebar__brand">
-        <div className="sidebar__logo">
-          <span className="sidebar__logo-icon">TF</span>
+        <div 
+          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          onClick={() => navigate('/')}
+          title="Go to Dashboard"
+        >
+          <div className="sidebar__logo">
+            <span className="sidebar__logo-icon">TF</span>
+          </div>
+          {!collapsed && <h1 className="sidebar__title">TraceFlow</h1>}
         </div>
-        {!collapsed && <h1 className="sidebar__title">TraceFlow</h1>}
         <button
           className="sidebar__collapse-btn"
           onClick={() => setCollapsed(!collapsed)}

@@ -11,7 +11,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
-import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 import Projects from './pages/Projects';
 import MoveHistory from './pages/MoveHistory';
 import './App.css';
@@ -55,7 +55,7 @@ function AppLayout() {
             <Route path="/warehouses" element={<Warehouses />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/move-history" element={<MoveHistory />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </main>
       </div>
