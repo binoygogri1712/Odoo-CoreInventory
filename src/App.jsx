@@ -6,6 +6,7 @@ import Procurement from './pages/Procurement';
 import Delivery  from './pages/Delivery';
 import IntraWarehouse from './pages/IntraWarehouse';
 import Products from './pages/Products';
+import Warehouses from './pages/Warehouses';
 import Login    from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -50,7 +51,7 @@ function AppLayout() {
             <Route path="/procurement" element={<Procurement />} />
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/intra-warehouse" element={<IntraWarehouse />} />
-            <Route path="/warehouses" element={<PlaceholderPage title="Total Warehouses" />} />
+            <Route path="/warehouses" element={<Warehouses />} />
             <Route path="/projects" element={<PlaceholderPage title="Projects" />} />
             <Route path="/move-history" element={<MoveHistory />} />
             <Route path="/settings" element={<Settings />} />
