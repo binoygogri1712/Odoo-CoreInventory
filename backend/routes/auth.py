@@ -11,10 +11,12 @@ from schemas import (
     OTPVerifyRequest,
     TokenResponse,
     MessageResponse,
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
 )
 from utils.hashing import hash_password, verify_password
-from utils.jwt_handler import create_access_token
-from utils.otp import generate_otp, send_otp_email
+from utils.jwt_handler import create_access_token, create_reset_token, verify_token
+from utils.otp import generate_otp, send_otp_email, send_reset_password_email
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 
@@ -185,3 +187,51 @@ def check_login_id(login_id: str, db: Session = Depends(get_db)):
 def check_email(email: str, db: Session = Depends(get_db)):
     exists = db.query(User).filter(User.email == email).first() is not None
     return {"available": not exists}
+
+
+# ─── FORGOT PASSWORD ──────────────────────────────────────
+@router.post("/forgot-password", response_model=MessageResponse)
+def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user:
+        # Prevent email enumeration by always returning success
+        return MessageResponse(message="If that email is registered, a password reset link has been sent.")
+
+    token = create_reset_token(email=user.email)
+    # The frontend URL for password reset
+    reset_link = f"http://localhost:5173/reset-password?token={token}"
+    
+    sent = send_reset_password_email(user.email, reset_link)
+    if not sent:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to send password reset email. Please try again.",
+        )
+
+    return MessageResponse(message="If that email is registered, a password reset link has been sent.")
+
+
+# ─── RESET PASSWORD ───────────────────────────────────────
+@router.post("/reset-password", response_model=MessageResponse)
+def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
+    payload = verify_token(req.token)
+    
+    if not payload or payload.get("type") != "reset":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired reset token.",
+        )
+        
+    email = payload.get("sub")
+    user = db.query(User).filter(User.email == email).first()
+    
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found.",
+        )
+        
+    user.password_hash = hash_password(req.new_password)
+    db.commit()
+    
+    return MessageResponse(message="Password has been reset successfully. You can now log in.")

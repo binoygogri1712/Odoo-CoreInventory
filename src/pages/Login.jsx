@@ -162,7 +162,7 @@ export default function Login() {
                 />
                 Remember me
               </label>
-              <a href="#" className="auth-forgot">Forgot Password?</a>
+              <Link to="/forgot-password" className="auth-forgot">Forgot Password?</Link>
             </div>
 
             <button type="submit" className="auth-submit-btn" disabled={loading}>

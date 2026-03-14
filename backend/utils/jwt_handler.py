@@ -24,3 +24,8 @@ def verify_token(token: str) -> dict | None:
         return payload
     except JWTError:
         return None
+
+def create_reset_token(email: str) -> str:
+    expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode = {"sub": email, "type": "reset", "exp": expire}
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
