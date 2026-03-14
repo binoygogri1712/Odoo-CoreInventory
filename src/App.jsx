@@ -11,6 +11,7 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Settings from './pages/Settings';
+import MoveHistory from './pages/MoveHistory';
 import './App.css';
 
 function PlaceholderPage({ title }) {
@@ -51,7 +52,7 @@ function AppLayout() {
             <Route path="/intra-warehouse" element={<IntraWarehouse />} />
             <Route path="/warehouses" element={<PlaceholderPage title="Total Warehouses" />} />
             <Route path="/projects" element={<PlaceholderPage title="Projects" />} />
-            <Route path="/move-history" element={<PlaceholderPage title="Move History" />} />
+            <Route path="/move-history" element={<MoveHistory />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
