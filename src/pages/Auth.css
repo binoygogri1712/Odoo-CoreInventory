@@ -552,19 +552,47 @@
 }
 
 .auth-demo-btn {
-  width: 100%;
+  flex: 1;
   padding: 12px;
-  margin-top: 10px;
-  border: 1.5px dashed rgba(124, 92, 252, 0.4);
   border-radius: 10px;
-  background: rgba(124, 92, 252, 0.04);
-  color: #7c5cfc;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
-.auth-demo-btn:hover {
-  background: rgba(124, 92, 252, 0.1);
+
+/* Admin — purple */
+.auth-demo-btn--admin {
+  border: 1.5px dashed rgba(124, 92, 252, 0.5);
+  background: rgba(124, 92, 252, 0.05);
+  color: #7c5cfc;
+}
+.auth-demo-btn--admin:hover {
+  background: rgba(124, 92, 252, 0.12);
   border-color: #7c5cfc;
+  transform: translateY(-1px);
+}
+
+/* Staff — teal */
+.auth-demo-btn--staff {
+  border: 1.5px dashed rgba(20, 184, 166, 0.5);
+  background: rgba(20, 184, 166, 0.05);
+  color: #0d9488;
+}
+.auth-demo-btn--staff:hover {
+  background: rgba(20, 184, 166, 0.12);
+  border-color: #0d9488;
+  transform: translateY(-1px);
+}
+
+/* Wrapper row */
+.auth-demo-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
 }

@@ -24,9 +24,13 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleDemoLogin = () => {
-    sessionStorage.setItem('traceflow_token', 'demo-mock-token');
-    sessionStorage.setItem('traceflow_user', JSON.stringify({ name: 'Demo User', email: 'demo@coreinventory.dev', login_id: 'DemoUser', role: 'admin' }));
+  const handleDemoLogin = (role) => {
+    const users = {
+      admin: { name: 'Admin User', email: 'admin@coreinventory.dev', login_id: 'AdminUser', role: 'admin' },
+      staff: { name: 'Staff User', email: 'staff@coreinventory.dev', login_id: 'StaffUser', role: 'staff' },
+    };
+    sessionStorage.setItem('traceflow_token', `demo-mock-token-${role}`);
+    sessionStorage.setItem('traceflow_user', JSON.stringify(users[role]));
     navigate('/');
   };
 
@@ -170,11 +174,16 @@ export default function Login() {
               Sign In
             </button>
 
-            <div className="auth-divider"><span>or</span></div>
+            <div className="auth-divider"><span>or try a demo</span></div>
 
-            <button type="button" className="auth-demo-btn" onClick={handleDemoLogin}>
-              Demo Login (no backend needed)
-            </button>
+            <div className="auth-demo-btns">
+              <button type="button" className="auth-demo-btn auth-demo-btn--admin" onClick={() => handleDemoLogin('admin')}>
+                🛡️ Admin Demo
+              </button>
+              <button type="button" className="auth-demo-btn auth-demo-btn--staff" onClick={() => handleDemoLogin('staff')}>
+                👤 Staff Demo
+              </button>
+            </div>
           </form>
 
           <div className="auth-footer">
