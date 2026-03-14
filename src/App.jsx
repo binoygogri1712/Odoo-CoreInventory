@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
-import Dashboard from './pages/Dashboard';
+import Dashboard   from './pages/Dashboard';
+import Procurement from './pages/Procurement';
 import './App.css';
 
 function PlaceholderPage({ title }) {
@@ -27,7 +28,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<PlaceholderPage title="Products" />} />
-              <Route path="/procurement" element={<PlaceholderPage title="Procurement" />} />
+              <Route path="/procurement" element={<Procurement />} />
               <Route path="/delivery" element={<PlaceholderPage title="Delivery" />} />
               <Route path="/intra-warehouse" element={<PlaceholderPage title="Intra Warehouse" />} />
               <Route path="/warehouses" element={<PlaceholderPage title="Total Warehouses" />} />
