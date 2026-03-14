@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { HiOutlineSearch, HiPlus, HiOutlineEye, HiX, HiChevronDown } from 'react-icons/hi';
+import { PRODUCTS, UNITS, nextRequestId, skuForProduct } from '../data/deliveryData';
 import { INITIAL_PROJECTS, nextProjectId } from '../data/projectsData';
 import './Projects.css';
 
@@ -109,6 +110,115 @@ function AddSiteModal({ onClose, onSave }) {
     );
 }
 
+// ─── Request Resources Modal ─────────────────────────────────────────────────
+function RequestResourcesModal({ project, onClose, onCreate }) {
+  const [requestId] = useState(() => nextRequestId());
+  const [productName, setProductName] = useState('');
+  const [qty, setQty] = useState('');
+  const [unit, setUnit] = useState(UNITS[0] || '');
+
+  const canSave = productName.trim() && qty && unit;
+
+  const handleSave = () => {
+    if (!canSave) return;
+    const today = new Date().toISOString().split('T')[0];
+    const sku = skuForProduct(productName);
+    const request = {
+      id: requestId,
+      site: project.name,
+      requestDate: today,
+      status: 'Pending',
+      items: [
+        {
+          product: productName,
+          sku,
+          qty: Number(qty),
+          unit,
+          approved: false,
+        },
+      ],
+    };
+    onCreate(request);
+    onClose();
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="project-doc project-doc--form" onClick={e => e.stopPropagation()}>
+        <div className="pdoc-header">
+          <div className="pdoc-header-left">
+            <h2 className="pdoc-title">Request Materials from Warehouse</h2>
+          </div>
+          <div className="pdoc-header-right">
+            <button className="btn btn-outline btn-sm" onClick={onClose}>
+              <HiX /> Cancel
+            </button>
+          </div>
+        </div>
+        <div className="pdoc-body">
+          <div className="pdoc-ref">
+            {requestId} — {project.name}
+          </div>
+          <div className="pdoc-fields" style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className="pdoc-field">
+              <label>Site</label>
+              <div className="pdoc-field-val">{project.location}</div>
+            </div>
+            <div className="pdoc-field">
+              <label>Product</label>
+              <select
+                className="pdoc-select"
+                value={productName}
+                onChange={e => setProductName(e.target.value)}
+              >
+                <option value="">Select a product…</option>
+                {PRODUCTS.map(p => (
+                  <option key={p.name} value={p.name}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="pdoc-field">
+              <label>Quantity</label>
+              <input
+                type="number"
+                min="1"
+                className="pdoc-input"
+                placeholder="Enter quantity"
+                value={qty}
+                onChange={e => setQty(e.target.value)}
+              />
+            </div>
+            <div className="pdoc-field">
+              <label>Unit</label>
+              <select
+                className="pdoc-select"
+                value={unit}
+                onChange={e => setUnit(e.target.value)}
+              >
+                {UNITS.map(u => (
+                  <option key={u} value={u}>
+                    {u}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="pdoc-footer">
+          <button className="btn btn-outline" onClick={onClose}>
+            Discard
+          </button>
+          <button className="btn btn-primary" onClick={handleSave} disabled={!canSave}>
+            Send Request to Warehouse
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Project View Details Modal ───────────────────────────────────────────────
 function ProjectDetailsModal({ project, onClose }) {
   if (!project) return null;
@@ -185,13 +295,14 @@ function ProjectDetailsModal({ project, onClose }) {
 }
 
 // ─── Main Projects Page ───────────────────────────────────────────────────────
-export default function Projects() {
+export default function Projects({ onCreateRequest }) {
   const [projectsData, setProjectsData] = useState(INITIAL_PROJECTS);
   const [activeTab, setActiveTab] = useState('On-going Sites');
   const [search, setSearch] = useState('');
   const [viewProject, setViewProject] = useState(null);
   const [isAddingSite, setIsAddingSite] = useState(false);
   const [openStatusId, setOpenStatusId] = useState(null);
+  const [requestForProject, setRequestForProject] = useState(null);
 
   const filteredProjects = useMemo(() => {
     return projectsData.filter(p => {
@@ -281,9 +392,19 @@ export default function Projects() {
                       />
                     </td>
                     <td className="actions-cell" onClick={e => e.stopPropagation()}>
-                      <button className="btn btn-outline btn-sm" title="View Details"
-                        onClick={() => setViewProject(project)}>
+                      <button
+                        className="btn btn-outline btn-sm"
+                        title="View Details"
+                        onClick={() => setViewProject(project)}
+                      >
                         <HiOutlineEye /> View
+                      </button>
+                      <button
+                        className="btn btn-primary btn-sm"
+                        title="Request materials from warehouse"
+                        onClick={() => setRequestForProject(project)}
+                      >
+                        Request Resources
                       </button>
                     </td>
                   </tr>
@@ -294,8 +415,25 @@ export default function Projects() {
         </div>
       </div>
 
-      {viewProject && <ProjectDetailsModal project={viewProject} onClose={() => setViewProject(null)} />}
-      {isAddingSite && <AddSiteModal onClose={() => setIsAddingSite(false)} onSave={handleSaveNewSite} />}
+      {viewProject && (
+        <ProjectDetailsModal
+          project={viewProject}
+          onClose={() => setViewProject(null)}
+        />
+      )}
+      {isAddingSite && (
+        <AddSiteModal
+          onClose={() => setIsAddingSite(false)}
+          onSave={handleSaveNewSite}
+        />
+      )}
+      {requestForProject && onCreateRequest && (
+        <RequestResourcesModal
+          project={requestForProject}
+          onClose={() => setRequestForProject(null)}
+          onCreate={onCreateRequest}
+        />
+      )}
     </div>
   );
 }

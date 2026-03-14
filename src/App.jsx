@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
@@ -13,6 +14,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Profile from './pages/Profile';
 import Projects from './pages/Projects';
+import { INITIAL_REQUESTS } from './data/deliveryData';
 import MoveHistory from './pages/MoveHistory';
 import './App.css';
 
@@ -40,6 +42,12 @@ function ProtectedRoute({ children }) {
 }
 
 function AppLayout() {
+  const [requests, setRequests] = useState(INITIAL_REQUESTS);
+
+  const handleCreateRequest = (req) => {
+    setRequests(prev => [req, ...prev]);
+  };
+
   return (
     <div className="app-layout">
       <Sidebar />
@@ -50,10 +58,16 @@ function AppLayout() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/products" element={<Products />} />
             <Route path="/procurement" element={<Procurement />} />
-            <Route path="/delivery" element={<Delivery />} />
+            <Route
+              path="/delivery"
+              element={<Delivery requests={requests} setRequests={setRequests} />}
+            />
             <Route path="/intra-warehouse" element={<IntraWarehouse />} />
             <Route path="/warehouses" element={<Warehouses />} />
-            <Route path="/projects" element={<Projects />} />
+            <Route
+              path="/projects"
+              element={<Projects onCreateRequest={handleCreateRequest} />}
+            />
             <Route path="/move-history" element={<MoveHistory />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>

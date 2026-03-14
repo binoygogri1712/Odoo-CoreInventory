@@ -73,6 +73,8 @@
   background: var(--bg-main);
   border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
   padding: 24px 0 0;
+  position: relative;
+  z-index: 1; /* ensure dropdowns render above tab header */
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -244,7 +246,7 @@
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  z-index: 200;
+  z-index: 300; /* above surrounding cards and headers */
   background: var(--bg-card);
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--radius-md);
@@ -325,6 +327,10 @@
   box-shadow: var(--shadow-md);
   transition: box-shadow var(--transition-fast);
   position: relative;
+}
+
+.status-section:hover {
+  z-index: 5; /* bring hovered section (and its dropdown) above sections below */
 }
 
 .section-header {
