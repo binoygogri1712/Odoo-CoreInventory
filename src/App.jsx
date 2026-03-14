@@ -5,6 +5,8 @@ import Dashboard   from './pages/Dashboard';
 import Procurement from './pages/Procurement';
 import Login    from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Settings from './pages/Settings';
 import './App.css';
 
@@ -62,6 +64,8 @@ export default function App() {
         {/* Public auth routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Protected app routes */}
         <Route
