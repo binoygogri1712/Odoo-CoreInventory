@@ -135,6 +135,7 @@ const activityData = [
 export default function Dashboard() {
   const user = JSON.parse(localStorage.getItem('traceflow_user') || sessionStorage.getItem('traceflow_user') || '{}');
   const userName = user?.login_id || 'Inventory Manager';
+  const userRole = user?.role || 'staff';
 
   return (
     <div className="dashboard">
@@ -161,36 +162,59 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Operation Summary Cards */}
-      <div className="dashboard__section-header">
-        <h2 className="dashboard__section-title">Operations Overview</h2>
-        <div className="dashboard__filters">
-          <button className="dashboard__filter-btn dashboard__filter-btn--active">All</button>
-          <button className="dashboard__filter-btn">Today</button>
-          <button className="dashboard__filter-btn">This Week</button>
-        </div>
-      </div>
+      {/* Admin-only: Operation Summary Cards */}
+      {userRole === 'admin' && (
+        <>
+          <div className="dashboard__section-header">
+            <h2 className="dashboard__section-title">Operations Overview</h2>
+            <div className="dashboard__filters">
+              <button className="dashboard__filter-btn dashboard__filter-btn--active">All</button>
+              <button className="dashboard__filter-btn">Today</button>
+              <button className="dashboard__filter-btn">This Week</button>
+            </div>
+          </div>
 
-      <div className="dashboard__ops-grid">
-        <OperationCard
-          title="Procurement"
-          icon={HiOutlineClipboardList}
-          stats={receiptStats}
-          total={8}
-          path="/procurement"
-          gradient="var(--gradient-blue)"
-          delay={100}
-        />
-        <OperationCard
-          title="Delivery"
-          icon={HiOutlineTruck}
-          stats={deliveryStats}
-          total={8}
-          path="/delivery"
-          gradient="var(--gradient-pink)"
-          delay={180}
-        />
-      </div>
+          <div className="dashboard__ops-grid">
+            <OperationCard
+              title="Procurement"
+              icon={HiOutlineClipboardList}
+              stats={receiptStats}
+              total={8}
+              path="/procurement"
+              gradient="var(--gradient-blue)"
+              delay={100}
+            />
+            <OperationCard
+              title="Delivery"
+              icon={HiOutlineTruck}
+              stats={deliveryStats}
+              total={8}
+              path="/delivery"
+              gradient="var(--gradient-pink)"
+              delay={180}
+            />
+          </div>
+        </>
+      )}
+
+      {/* Staff-only: Info banner */}
+      {userRole === 'staff' && (
+        <div className="dashboard__staff-notice" style={{
+          background: 'rgba(99,102,241,0.06)',
+          border: '1px solid rgba(99,102,241,0.18)',
+          borderRadius: '14px',
+          padding: '20px 28px',
+          marginBottom: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '14px',
+          color: 'var(--text-secondary)',
+          fontSize: '0.92rem',
+        }}>
+          <HiOutlineClipboardList style={{ fontSize: '1.6rem', color: 'var(--primary)', flexShrink: 0 }} />
+          <span>You are logged in as <strong>Staff</strong>. You can view products, deliveries, and projects. Request approval features are managed by admins.</span>
+        </div>
+      )}
 
       {/* Recent Activity */}
       <ActivityTable data={activityData} />

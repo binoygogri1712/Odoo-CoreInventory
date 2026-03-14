@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { HiOutlineUser, HiOutlineMail, HiOutlineLogout } from 'react-icons/hi';
+import { HiOutlineUser, HiOutlineMail, HiOutlineLogout, HiOutlineShieldCheck } from 'react-icons/hi';
 import './Profile.css';
 
 export default function Profile() {
@@ -8,7 +8,7 @@ export default function Profile() {
   const [profile, setProfile] = useState({
     login_id: 'Admin',
     email: 'admin@traceflow.com',
-    role: 'Administrator'
+    role: 'admin'
   });
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function Profile() {
         setProfile({
           login_id: user.login_id || 'Admin',
           email: user.email || 'admin@traceflow.com',
-          role: 'Administrator'
+          role: user.role || 'staff'
         });
       } catch (e) {
         // ignore
@@ -51,7 +51,7 @@ export default function Profile() {
             </div>
             <div className="profile-header-info">
               <h2>{profile.login_id}</h2>
-              <span className="profile-badge">{profile.role}</span>
+              <span className="profile-badge">{profile.role === 'admin' ? 'Administrator' : 'Staff'}</span>
             </div>
           </div>
           
@@ -69,6 +69,14 @@ export default function Profile() {
               <div className="profile-field-text">
                 <span className="profile-label">Email Address</span>
                 <span className="profile-val">{profile.email}</span>
+              </div>
+            </div>
+
+            <div className="profile-field">
+              <span className="profile-field-icon"><HiOutlineShieldCheck /></span>
+              <div className="profile-field-text">
+                <span className="profile-label">Role</span>
+                <span className="profile-val">{profile.role === 'admin' ? 'Administrator' : 'Staff'}</span>
               </div>
             </div>
           </div>

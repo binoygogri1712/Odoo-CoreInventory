@@ -37,6 +37,7 @@ export default function Register() {
     email: '',
     mobile: '',
     gender: '',
+    role: 'staff',
     password: '',
     confirmPassword: '',
   });
@@ -114,6 +115,7 @@ export default function Register() {
           password: form.password,
           mobile: form.mobile,
           gender: form.gender,
+          role: form.role,
         }),
       });
 
@@ -322,6 +324,22 @@ export default function Register() {
                       <HiOutlineUser className="form-input-icon" />
                     </div>
                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Role <span>*</span></label>
+                  <div className="form-input-wrap">
+                    <select
+                      className="form-select"
+                      value={form.role}
+                      onChange={(e) => updateForm('role', e.target.value)}
+                    >
+                      <option value="staff">Staff</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                    <HiOutlineUser className="form-input-icon" />
+                  </div>
+                  <span className="form-hint">Admin has full access. Staff has limited access.</span>
                 </div>
 
                 <button type="submit" className="auth-submit-btn" disabled={loading}>

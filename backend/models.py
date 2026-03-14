@@ -14,6 +14,7 @@ class User(Base):
     password_hash = Column(String(255), nullable=False)
     mobile = Column(String(15), nullable=False)
     gender = Column(String(10), nullable=False)
+    role = Column(String(10), default="staff", nullable=False)
     is_verified = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 

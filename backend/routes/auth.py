@@ -45,6 +45,7 @@ def register(req: RegisterRequest, db: Session = Depends(get_db)):
         password_hash=hash_password(req.password),
         mobile=req.mobile,
         gender=req.gender,
+        role=req.role,
         is_verified=False,
     )
     db.add(user)
@@ -161,7 +162,7 @@ def login(req: LoginRequest, db: Session = Depends(get_db)):
 
     # Create JWT token
     token = create_access_token(
-        data={"sub": str(user.id), "login_id": user.login_id, "email": user.email}
+        data={"sub": str(user.id), "login_id": user.login_id, "email": user.email, "role": user.role}
     )
 
     return TokenResponse(
@@ -172,6 +173,7 @@ def login(req: LoginRequest, db: Session = Depends(get_db)):
             "email": user.email,
             "mobile": user.mobile,
             "gender": user.gender,
+            "role": user.role,
         },
     )
 

@@ -11,6 +11,9 @@ import ScheduleTab  from '../components/delivery/ScheduleTab';
 import './Delivery.css';
 
 export default function Delivery({ requests: sharedRequests, setRequests: setSharedRequests }) {
+  const user = JSON.parse(localStorage.getItem('traceflow_user') || sessionStorage.getItem('traceflow_user') || '{}');
+  const userRole = user?.role || 'staff';
+
   const [activeTab,   setActiveTab]   = useState('delivery');
   const [deliveries,  setDeliveries]  = useState(INITIAL_DELIVERIES);
   const [localRequests, setLocalRequests] = useState(INITIAL_REQUESTS);
@@ -58,16 +61,18 @@ export default function Delivery({ requests: sharedRequests, setRequests: setSha
           Delivery
           <span className="del-tab-badge">{deliveries.length}</span>
         </button>
-        <button
-          className={`del-tab-btn ${activeTab === 'requests' ? 'del-tab-btn--active' : ''}`}
-          onClick={() => setActiveTab('requests')}
-        >
-          <HiOutlineClipboardList className="del-tab-icon" />
-          Requests
-          {pendingCount > 0 && (
-            <span className="del-tab-badge del-tab-badge--alert">{pendingCount}</span>
-          )}
-        </button>
+        {userRole === 'admin' && (
+          <button
+            className={`del-tab-btn ${activeTab === 'requests' ? 'del-tab-btn--active' : ''}`}
+            onClick={() => setActiveTab('requests')}
+          >
+            <HiOutlineClipboardList className="del-tab-icon" />
+            Requests
+            {pendingCount > 0 && (
+              <span className="del-tab-badge del-tab-badge--alert">{pendingCount}</span>
+            )}
+          </button>
+        )}
         <button
           className={`del-tab-btn ${activeTab === 'schedule' ? 'del-tab-btn--active' : ''}`}
           onClick={() => setActiveTab('schedule')}
@@ -85,7 +90,7 @@ export default function Delivery({ requests: sharedRequests, setRequests: setSha
             onUpdateStatus={updateDeliveryStatus}
           />
         )}
-        {activeTab === 'requests' && (
+        {activeTab === 'requests' && userRole === 'admin' && (
           <RequestsTab
             requests={requests}
             onApprove={approveRequest}

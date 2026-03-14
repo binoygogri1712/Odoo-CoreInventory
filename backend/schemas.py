@@ -8,6 +8,7 @@ class RegisterRequest(BaseModel):
     password: str
     mobile: str
     gender: str
+    role: str = "staff"
 
     @field_validator("login_id")
     @classmethod
@@ -45,6 +46,13 @@ class RegisterRequest(BaseModel):
     def validate_gender(cls, v):
         if v.lower() not in ["male", "female", "other"]:
             raise ValueError("Gender must be male, female, or other")
+        return v.lower()
+
+    @field_validator("role")
+    @classmethod
+    def validate_role(cls, v):
+        if v.lower() not in ["admin", "staff"]:
+            raise ValueError("Role must be admin or staff")
         return v.lower()
 
 

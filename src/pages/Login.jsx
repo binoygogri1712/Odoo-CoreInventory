@@ -26,7 +26,7 @@ export default function Login() {
 
   const handleDemoLogin = () => {
     sessionStorage.setItem('traceflow_token', 'demo-mock-token');
-    sessionStorage.setItem('traceflow_user', JSON.stringify({ name: 'Demo User', email: 'demo@coreinventory.dev' }));
+    sessionStorage.setItem('traceflow_user', JSON.stringify({ name: 'Demo User', email: 'demo@coreinventory.dev', login_id: 'DemoUser', role: 'admin' }));
     navigate('/');
   };
 

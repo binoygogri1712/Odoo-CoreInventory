@@ -6,6 +6,9 @@ import RequestsTab from '../components/procurement/RequestsTab';
 import './Procurement.css';
 
 export default function Procurement() {
+  const user = JSON.parse(localStorage.getItem('traceflow_user') || sessionStorage.getItem('traceflow_user') || '{}');
+  const userRole = user?.role || 'staff';
+
   const [activeTab, setActiveTab] = useState('orders');
   const [orders,    setOrders]    = useState(INITIAL_ORDERS);
   const [receipts,  setReceipts]  = useState(INITIAL_RECEIPTS);
@@ -19,19 +22,22 @@ export default function Procurement() {
   const updateOrderStatus = (id, status) => setOrders(prev => prev.map(o => o.id === id ? { ...o, status } : o));
 
   const approveRequest = (requestId) => {
-    setRequests(prev => {
-      const req = prev.find(r => r.id === requestId);
-      if (!req) return prev;
-      // Move linked order into "Ordered" stage when request is approved
-      setOrders(prevOrders =>
-        prevOrders.map(o =>
-          o.id === req.orderId ? { ...o, status: 'Ordered' } : o
-        )
-      );
-      return prev.map(r =>
+    const req = requests.find(r => r.id === requestId);
+    if (!req) return;
+
+    // Update order status separately (not nested inside setRequests)
+    setOrders(prevOrders =>
+      prevOrders.map(o =>
+        o.id === req.orderId ? { ...o, status: 'Ordered' } : o
+      )
+    );
+
+    // Update request status
+    setRequests(prev =>
+      prev.map(r =>
         r.id === requestId ? { ...r, status: 'Approved' } : r
-      );
-    });
+      )
+    );
   };
 
   return (
@@ -52,13 +58,15 @@ export default function Procurement() {
           Receipts
           <span className="proc-tab-badge">{receipts.length}</span>
         </button>
-        <button
-          className={`proc-tab ${activeTab === 'requests' ? 'proc-tab--active' : ''}`}
-          onClick={() => setActiveTab('requests')}
-        >
-          Requests
-          <span className="proc-tab-badge">{requests.length}</span>
-        </button>
+        {userRole === 'admin' && (
+          <button
+            className={`proc-tab ${activeTab === 'requests' ? 'proc-tab--active' : ''}`}
+            onClick={() => setActiveTab('requests')}
+          >
+            Requests
+            <span className="proc-tab-badge">{requests.length}</span>
+          </button>
+        )}
       </div>
 
       {/* ── Tab content ── */}
@@ -81,7 +89,7 @@ export default function Procurement() {
             onAddOrder={addOrder}
           />
         )}
-        {activeTab === 'requests' && (
+        {activeTab === 'requests' && userRole === 'admin' && (
           <RequestsTab
             requests={requests}
             onApprove={approveRequest}

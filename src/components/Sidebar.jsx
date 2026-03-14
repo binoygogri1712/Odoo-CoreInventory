@@ -46,6 +46,7 @@ export default function Sidebar() {
   const user = JSON.parse(localStorage.getItem('traceflow_user') || sessionStorage.getItem('traceflow_user') || '{}');
   const userName = user?.login_id || 'Inventory Mgr';
   const avatarText = user?.login_id ? user.login_id.substring(0, 2).toUpperCase() : 'IM';
+  const userRole = user?.role === 'admin' ? 'Admin' : 'Staff';
 
   const isOpsActive = operationItems.some((item) => location.pathname === item.path);
 
@@ -177,7 +178,7 @@ export default function Sidebar() {
           {!collapsed && (
             <div className="sidebar__user-info">
               <span className="sidebar__user-name">{userName}</span>
-              <span className="sidebar__user-role">Admin</span>
+              <span className="sidebar__user-role">{userRole}</span>
             </div>
           )}
         </div>
