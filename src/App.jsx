@@ -4,6 +4,7 @@ import Topbar from './components/Topbar';
 import Dashboard   from './pages/Dashboard';
 import Procurement from './pages/Procurement';
 import Delivery  from './pages/Delivery';
+import Products from './pages/Products';
 import Login    from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -43,7 +44,7 @@ function AppLayout() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/products" element={<PlaceholderPage title="Products" />} />
+            <Route path="/products" element={<Products />} />
             <Route path="/procurement" element={<Procurement />} />
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/intra-warehouse" element={<PlaceholderPage title="Intra Warehouse" />} />
