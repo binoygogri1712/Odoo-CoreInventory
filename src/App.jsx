@@ -1,16 +1,17 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
-import Dashboard   from './pages/Dashboard';
+import Dashboard from './pages/Dashboard';
 import Procurement from './pages/Procurement';
-import Delivery  from './pages/Delivery';
+import Delivery from './pages/Delivery';
 import IntraWarehouse from './pages/IntraWarehouse';
 import Products from './pages/Products';
-import Login    from './pages/Login';
+import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Settings from './pages/Settings';
+import Projects from './pages/Projects';
 import './App.css';
 
 function PlaceholderPage({ title }) {
@@ -50,7 +51,7 @@ function AppLayout() {
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/intra-warehouse" element={<IntraWarehouse />} />
             <Route path="/warehouses" element={<PlaceholderPage title="Total Warehouses" />} />
-            <Route path="/projects" element={<PlaceholderPage title="Projects" />} />
+            <Route path="/projects" element={<Projects />} />
             <Route path="/move-history" element={<PlaceholderPage title="Move History" />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
