@@ -243,6 +243,7 @@ function NewOrderWizard({ vendors, onClose, onPlaceOrder, onAddVendor }) {
   const [quantity, setQuantity] = useState('');
   const [pricePerUnit, setPricePerUnit] = useState('');
   const [receiptPreview, setReceiptPreview] = useState(null);
+  const [warehouse, setWarehouse] = useState('Main Warehouse');
 
   const filteredProducts = PRODUCTS.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase())
@@ -270,15 +271,32 @@ function NewOrderWizard({ vendors, onClose, onPlaceOrder, onAddVendor }) {
     const today = new Date().toISOString().split('T')[0];
     const sched = new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0];
     const order = {
-      id: orderId, product: selectedProduct.name, sku: '',
-      quantity: qty, unit: selectedUnit, pricePerUnit: price, totalPrice: qty * price,
-      vendor: selectedVendor.name, status: 'Ordered', date: today,
+      id: orderId,
+      product: selectedProduct.name,
+      sku: '',
+      quantity: qty,
+      unit: selectedUnit,
+      pricePerUnit: price,
+      totalPrice: qty * price,
+      vendor: selectedVendor.name,
+      warehouse,
+      status: 'Ordered',
+      date: today,
     };
     const receipt = {
-      id: receiptId, orderId, receiveFrom: selectedVendor.name,
-      product: selectedProduct.name, quantity: qty, unit: selectedUnit,
-      pricePerUnit: price, totalPrice: qty * price,
-      responsible: 'Inventory Mgr', scheduleDate: sched, status: 'Draft', date: today,
+      id: receiptId,
+      orderId,
+      receiveFrom: selectedVendor.name,
+      product: selectedProduct.name,
+      quantity: qty,
+      unit: selectedUnit,
+      pricePerUnit: price,
+      totalPrice: qty * price,
+      responsible: 'Inventory Mgr',
+      scheduleDate: sched,
+      status: 'Draft',
+      date: today,
+      warehouse,
     };
     onPlaceOrder(order, receipt);
     setReceiptPreview(receipt);
@@ -425,6 +443,18 @@ function NewOrderWizard({ vendors, onClose, onPlaceOrder, onAddVendor }) {
                     value={pricePerUnit} onChange={e => setPricePerUnit(e.target.value)} />
                 </div>
               </div>
+              <div className="cinput-group">
+                <label>Deliver To Warehouse</label>
+                <select
+                  className="rdoc-input"
+                  value={warehouse}
+                  onChange={e => setWarehouse(e.target.value)}
+                >
+                  <option>Main Warehouse</option>
+                  <option>Store Room 1</option>
+                  <option>Store Room 2</option>
+                </select>
+              </div>
             </div>
             {quantity && pricePerUnit && (
               <div className="total-preview">
@@ -447,7 +477,7 @@ function NewOrderWizard({ vendors, onClose, onPlaceOrder, onAddVendor }) {
 
 // ─── Orders Tab ───────────────────────────────────────────────────────────────
 
-export default function OrdersTab({ orders, vendors, onAddOrder, onAddReceipt, onAddVendor, onUpdateStatus }) {
+export default function OrdersTab({ orders, vendors, onAddOrder, onAddReceipt, onAddVendor, onCreateRequest, onUpdateStatus }) {
   const [view,          setView]         = useState('sections');
   const [search,        setSearch]       = useState('');
   const [showWizard,    setShowWizard]   = useState(false);
@@ -460,7 +490,24 @@ export default function OrdersTab({ orders, vendors, onAddOrder, onAddReceipt, o
       o.vendor.toLowerCase().includes(search.toLowerCase())
     ), [orders, search]);
 
-  const handlePlaceOrder = (order, receipt) => { onAddOrder(order); onAddReceipt(receipt); };
+  const handlePlaceOrder = (order, receipt) => {
+    onAddOrder(order);
+    onAddReceipt(receipt);
+    if (onCreateRequest) {
+      const req = {
+        id: `PO-REQ-${Date.now()}`,
+        orderId: order.id,
+        product: order.product,
+        vendor: order.vendor,
+        warehouse: order.warehouse,
+        quantity: order.quantity,
+        unit: order.unit,
+        status: 'Pending',
+        date: order.date,
+      };
+      onCreateRequest(req);
+    }
+  };
 
   const kanban = {
     'Ordered':    filtered.filter(o => o.status === 'Ordered'),
