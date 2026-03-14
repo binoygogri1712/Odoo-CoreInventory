@@ -533,3 +533,38 @@
     font-size: 1.3rem;
   }
 }
+
+/* ── Demo login ─────────────────────────────────────────── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 0;
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.8rem;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.auth-demo-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1.5px dashed rgba(124, 92, 252, 0.4);
+  border-radius: 10px;
+  background: rgba(124, 92, 252, 0.04);
+  color: #7c5cfc;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.auth-demo-btn:hover {
+  background: rgba(124, 92, 252, 0.1);
+  border-color: #7c5cfc;
+}

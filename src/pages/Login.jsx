@@ -24,6 +24,12 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const handleDemoLogin = () => {
+    sessionStorage.setItem('traceflow_token', 'demo-mock-token');
+    sessionStorage.setItem('traceflow_user', JSON.stringify({ name: 'Demo User', email: 'demo@coreinventory.dev' }));
+    navigate('/');
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -162,6 +168,12 @@ export default function Login() {
             <button type="submit" className="auth-submit-btn" disabled={loading}>
               {loading && <span className="auth-spinner"></span>}
               Sign In
+            </button>
+
+            <div className="auth-divider"><span>or</span></div>
+
+            <button type="button" className="auth-demo-btn" onClick={handleDemoLogin}>
+              Demo Login (no backend needed)
             </button>
           </form>
 
