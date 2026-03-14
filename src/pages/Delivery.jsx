@@ -10,10 +10,13 @@ import RequestsTab  from '../components/delivery/RequestsTab';
 import ScheduleTab  from '../components/delivery/ScheduleTab';
 import './Delivery.css';
 
-export default function Delivery() {
+export default function Delivery({ requests: sharedRequests, setRequests: setSharedRequests }) {
   const [activeTab,   setActiveTab]   = useState('delivery');
   const [deliveries,  setDeliveries]  = useState(INITIAL_DELIVERIES);
-  const [requests,    setRequests]    = useState(INITIAL_REQUESTS);
+  const [localRequests, setLocalRequests] = useState(INITIAL_REQUESTS);
+
+  const requests   = sharedRequests   ?? localRequests;
+  const setRequests = setSharedRequests ?? setLocalRequests;
 
   // Update delivery status
   const updateDeliveryStatus = (id, status) =>
