@@ -71,3 +71,27 @@ class TokenResponse(BaseModel):
 class MessageResponse(BaseModel):
     message: str
     success: bool = True
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
+
+    @field_validator("new_password")
+    @classmethod
+    def validate_password(cls, v):
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters")
+        if not re.search(r'[A-Z]', v):
+            raise ValueError("Password must contain at least 1 uppercase letter")
+        if not re.search(r'[a-z]', v):
+            raise ValueError("Password must contain at least 1 lowercase letter")
+        if not re.search(r'[0-9]', v):
+            raise ValueError("Password must contain at least 1 number")
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', v):
+            raise ValueError("Password must contain at least 1 special character")
+        return v
