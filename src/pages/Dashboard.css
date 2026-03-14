@@ -1,0 +1,159 @@
+/* ===== DASHBOARD PAGE ===== */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Welcome Banner */
+.dashboard__welcome {
+  position: relative;
+  background: linear-gradient(135deg, #7c5cfc 0%, #9b82fc 50%, #b085ff 100%);
+  border-radius: var(--radius-xl);
+  padding: 32px 36px;
+  color: #fff;
+  overflow: hidden;
+}
+
+.dashboard__welcome-content {
+  position: relative;
+  z-index: 2;
+}
+
+.dashboard__welcome-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.dashboard__welcome-title span {
+  color: #fbbf24;
+}
+
+.dashboard__welcome-text {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+.dashboard__welcome-text strong {
+  color: #fbbf24;
+}
+
+.dashboard__welcome-graphic {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+}
+
+.dashboard__welcome-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.dashboard__welcome-circle--2 {
+  width: 140px;
+  height: 140px;
+  top: 60px;
+  right: 80px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* KPI Grid */
+.dashboard__kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+/* Section Header */
+.dashboard__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.dashboard__section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dashboard__filters {
+  display: flex;
+  gap: 6px;
+}
+
+.dashboard__filter-btn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: all var(--transition-fast);
+}
+
+.dashboard__filter-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.dashboard__filter-btn--active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* Operations Grid */
+.dashboard__ops-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+/* Responsive */
+@media (max-width: 1280px) {
+  .dashboard__kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard__kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard__ops-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard__kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard__welcome {
+    padding: 24px 20px;
+  }
+
+  .dashboard__welcome-title {
+    font-size: 1.2rem;
+  }
+
+  .dashboard__section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

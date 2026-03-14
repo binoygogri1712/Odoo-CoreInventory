@@ -1,0 +1,116 @@
+/* ===== ACTIVITY TABLE ===== */
+.activity-table-wrap {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  animation: slideInUp 0.5s ease 0.3s both;
+}
+
+.activity-table__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+}
+
+.activity-table__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.activity-table__btn {
+  font-size: 0.82rem;
+  color: var(--primary);
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: all var(--transition-fast);
+}
+
+.activity-table__btn:hover {
+  background: var(--primary-glow);
+}
+
+.activity-table__scroll {
+  overflow-x: auto;
+}
+
+.activity-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.activity-table thead tr {
+  background: var(--bg-main);
+}
+
+.activity-table th {
+  padding: 12px 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.activity-table td {
+  padding: 14px 20px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  white-space: nowrap;
+}
+
+.activity-table__row {
+  animation: fadeIn 0.4s ease both;
+  transition: background var(--transition-fast);
+}
+
+.activity-table__row:hover {
+  background: var(--bg-card-hover);
+}
+
+.activity-table__ref {
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.activity-table__ref:hover {
+  text-decoration: underline;
+}
+
+.activity-table__date {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.activity-table__product {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.activity-table__qty {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.qty--in {
+  color: var(--status-ready);
+}
+
+.qty--out {
+  color: var(--status-late);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .activity-table th,
+  .activity-table td {
+    padding: 10px 14px;
+  }
+}
