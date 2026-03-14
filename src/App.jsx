@@ -1,8 +1,9 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
-import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
+import Dashboard   from './pages/Dashboard';
+import Procurement from './pages/Procurement';
+import Login    from './pages/Login';
 import Register from './pages/Register';
 import Settings from './pages/Settings';
 import './App.css';
@@ -40,7 +41,7 @@ function AppLayout() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/products" element={<PlaceholderPage title="Products" />} />
-            <Route path="/procurement" element={<PlaceholderPage title="Procurement" />} />
+            <Route path="/procurement" element={<Procurement />} />
             <Route path="/delivery" element={<PlaceholderPage title="Delivery" />} />
             <Route path="/intra-warehouse" element={<PlaceholderPage title="Intra Warehouse" />} />
             <Route path="/warehouses" element={<PlaceholderPage title="Total Warehouses" />} />
