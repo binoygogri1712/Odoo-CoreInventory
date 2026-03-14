@@ -4,6 +4,7 @@ import Topbar from './components/Topbar';
 import Dashboard   from './pages/Dashboard';
 import Procurement from './pages/Procurement';
 import Delivery  from './pages/Delivery';
+import IntraWarehouse from './pages/IntraWarehouse';
 import Products from './pages/Products';
 import Login    from './pages/Login';
 import Register from './pages/Register';
@@ -47,7 +48,7 @@ function AppLayout() {
             <Route path="/products" element={<Products />} />
             <Route path="/procurement" element={<Procurement />} />
             <Route path="/delivery" element={<Delivery />} />
-            <Route path="/intra-warehouse" element={<PlaceholderPage title="Intra Warehouse" />} />
+            <Route path="/intra-warehouse" element={<IntraWarehouse />} />
             <Route path="/warehouses" element={<PlaceholderPage title="Total Warehouses" />} />
             <Route path="/projects" element={<PlaceholderPage title="Projects" />} />
             <Route path="/move-history" element={<PlaceholderPage title="Move History" />} />
