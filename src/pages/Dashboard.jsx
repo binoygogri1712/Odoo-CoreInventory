@@ -133,13 +133,16 @@ const activityData = [
 
 /* ===== DASHBOARD COMPONENT ===== */
 export default function Dashboard() {
+  const user = JSON.parse(localStorage.getItem('traceflow_user') || sessionStorage.getItem('traceflow_user') || '{}');
+  const userName = user?.login_id || 'Inventory Manager';
+
   return (
     <div className="dashboard">
       {/* Welcome Banner */}
       <div className="dashboard__welcome animate-slide-in">
         <div className="dashboard__welcome-content">
           <h2 className="dashboard__welcome-title">
-            Good {getGreeting()}, <span>Inventory Manager</span> 👋
+            Good {getGreeting()}, <span>{userName}</span> 👋
           </h2>
           <p className="dashboard__welcome-text">
             Here's your inventory snapshot for today. You have <strong>3 pending receipts</strong> and <strong>5 deliveries</strong> to process.

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   HiOutlineViewGrid,
   HiOutlineCube,
@@ -41,6 +41,11 @@ export default function Sidebar() {
   const [opsOpen, setOpsOpen] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem('traceflow_user') || sessionStorage.getItem('traceflow_user') || '{}');
+  const userName = user?.login_id || 'Inventory Mgr';
+  const avatarText = user?.login_id ? user.login_id.substring(0, 2).toUpperCase() : 'IM';
 
   const isOpsActive = operationItems.some((item) => location.pathname === item.path);
 
@@ -49,9 +54,9 @@ export default function Sidebar() {
       {/* Brand */}
       <div className="sidebar__brand">
         <div className="sidebar__logo">
-          <span className="sidebar__logo-icon">CI</span>
+          <span className="sidebar__logo-icon">TF</span>
         </div>
-        {!collapsed && <h1 className="sidebar__title">CoreInventory</h1>}
+        {!collapsed && <h1 className="sidebar__title">TraceFlow</h1>}
         <button
           className="sidebar__collapse-btn"
           onClick={() => setCollapsed(!collapsed)}
@@ -162,19 +167,14 @@ export default function Sidebar() {
       {/* User Profile */}
       <div className="sidebar__footer">
         <div className="sidebar__user">
-          <div className="sidebar__user-avatar">IM</div>
+          <div className="sidebar__user-avatar">{avatarText}</div>
           {!collapsed && (
             <div className="sidebar__user-info">
-              <span className="sidebar__user-name">Inventory Mgr</span>
+              <span className="sidebar__user-name">{userName}</span>
               <span className="sidebar__user-role">Admin</span>
             </div>
           )}
         </div>
-        {!collapsed && (
-          <button className="sidebar__logout" title="Logout">
-            <HiOutlineLogout />
-          </button>
-        )}
       </div>
     </aside>
   );

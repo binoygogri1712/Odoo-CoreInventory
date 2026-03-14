@@ -1,0 +1,51 @@
+.settings-page {
+  padding: 24px;
+}
+
+.settings-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+}
+
+.settings-card h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #1a1d29;
+}
+
+.settings-card p {
+  color: #6b7185;
+  margin-bottom: 24px;
+}
+
+.settings-section {
+  border-top: 1px solid #eef0f5;
+  padding-top: 24px;
+  margin-top: 24px;
+}
+
+.settings-section h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 16px;
+  color: #3b3f4f;
+}
+
+.logout-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #dc2626;
+}
